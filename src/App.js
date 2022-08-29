@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import api from "./API";
 // import User from "./components/User/User";
 import { SortableItemProps } from "@thaddeusjiang/react-sortable-list";
+import { Reorder } from "framer-motion"
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -17,63 +18,28 @@ function App() {
     beach();
   }, []);
 
+  // useEffect(() => {
+  //   // console.log(users);
+  //   api.editUser(currentUser.id, 5)
+  // }, [currentUser])
+  
+
   function dragStartHandler(e, user) {
     setCurrnetUser(user);
-    // console.log(user);
-  }
-  function dragEndHandler(e) {
-    e.target.style.background = "white";
-  }
-  function dragOverHandler(e) {
-    e.preventDefault();
-    e.target.style.background = "lightgray";
-  }
-  function dropHandler(e, user) {
-    e.preventDefault();
-    setUsers(
-      users.map((c) => {
-        // console.log(c);
-        if (c.id === user.id) {
-          return { ...c, order: currentUser.order };
-        }
-        if (c.id === currentUser.id) {
-          return { ...c, order: user.order };
-        }
-        return c;
-      })
-    );
-    e.target.style.background = "white";
+    console.log(user);
   }
 
-  const sortCards = (a, b) => {
-    if (a.order > b.order) {
-      return 1;
-    } else {
-      return -1;
-    }
-  };
-
-  useEffect(() => {
-    
-  }, [users]);
 
   return (
-    <div>
-      {users.sort(sortCards).map((user) => (
-        <div
-          onDragStart={(e) => dragStartHandler(e, user)}
-          onDragLeave={(e) => dragEndHandler(e)}
-          onDragEnd={(e) => dragEndHandler(e)}
-          onDragOver={(e) => dragOverHandler(e)}
-          onDrop={(e) => dropHandler(e, user)}
-          draggable={true}
-        >
-          <h1>{user.firstName}</h1>
-          {/* <h2>{user.lastName}</h2> */}
-        </div>
+    <Reorder.Group axis="y" values={users} onReorder={setUsers} >
+      {users.map((user) => (
+        <Reorder.Item key={user.id} value={user} onDragStart={(e) => dragStartHandler(e, user)}>
+          <h1>{user.lastName}</h1>
+        </Reorder.Item>
       ))}
-    </div>
-  );
+      <button onClick={(e) => api.editUser(currentUser.id, 5)}></button>
+    </Reorder.Group>
+  )
 }
 
 export default App;
