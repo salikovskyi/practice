@@ -5,11 +5,11 @@ const instance = axios.create({
 });
 
 const getUsers = () => {
-  return instance.get("/users?sortBy=createdAt&order=desc");
+  return instance.get("/users");
 };
 
-const editUser = (id, or) => {
-  return instance.put(`/users/${id}`, `${or}`);
+const editUser = (id, order) => {
+  return instance.put(`/users/${id}`, { order: `${order}` });
 };
 
 export default {
