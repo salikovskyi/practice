@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import api from "./API";
 // import User from "./components/User/User";
 import { SortableItemProps } from "@thaddeusjiang/react-sortable-list";
-import { Reorder } from "framer-motion"
+import { Reorder } from "framer-motion";
+import { useDrag } from "react-dnd";
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -18,28 +19,43 @@ function App() {
     beach();
   }, []);
 
-  // useEffect(() => {
-  //   // console.log(users);
-  //   api.editUser(currentUser.id, 5)
-  // }, [currentUser])
-  
+  useEffect(() => {
+    console.log(users);
+  }, [users])
 
-  function dragStartHandler(e, user) {
-    setCurrnetUser(user);
-    console.log(user);
+  // function eq() {
+  //   api.deleteUser5();
+  //   api.deleteUser4();
+  //   api.deleteUser3();
+  //   api.deleteUser2();
+  //   api.deleteUser1();
+  // }
+  function deletee() {
+    users.forEach((el, i, arr) => {
+      api.deleteUser(i + 1);
+    });
   }
 
-
+  
   return (
-    <Reorder.Group axis="y" values={users} onReorder={setUsers} >
+    <Reorder.Group axis="y" values={users} onReorder={setUsers}>
       {users.map((user) => (
-        <Reorder.Item key={user.id} value={user} onDragStart={(e) => dragStartHandler(e, user)}>
+        <Reorder.Item key={user.id} value={user}>
           <h1>{user.lastName}</h1>
         </Reorder.Item>
       ))}
-      <button onClick={(e) => api.editUser(currentUser.id, 5)}></button>
+      <button
+        onClick={(e) => {
+          api.postUsers(users[0]);
+          deletee();
+
+
+        }}
+      >
+        СОХРАНЯЛКА
+      </button>
     </Reorder.Group>
-  )
+  );
 }
 
 export default App;
