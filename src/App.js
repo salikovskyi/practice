@@ -8,53 +8,21 @@ import { Reorder } from "framer-motion";
 import { useDrag } from "react-dnd";
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [currentUser, setCurrnetUser] = useState(null);
-  useEffect(() => {
-    const beach = async () => {
-      const { data } = await api.getUsers();
-      setUsers(data);
-    };
 
-    beach();
-  }, []);
-
-  useEffect(() => {
-    console.log(users);
-  }, [users])
-
-  // function eq() {
-  //   api.deleteUser5();
-  //   api.deleteUser4();
-  //   api.deleteUser3();
-  //   api.deleteUser2();
-  //   api.deleteUser1();
-  // }
-  function deletee() {
-    users.forEach((el, i, arr) => {
-      api.deleteUser(i + 1);
-    });
+  const sum =(a,b) => {
+    return a + b 
+  }
+  
+  const logName = (fn) => {
+    return (...args)=> {
+      return fn(...args)
+    }
   }
 
-  
+  const wrappedSum = logName(sum)
+  const result = wrappedSum(2,3)
   return (
-    <Reorder.Group axis="y" values={users} onReorder={setUsers}>
-      {users.map((user) => (
-        <Reorder.Item key={user.id} value={user}>
-          <h1>{user.lastName}</h1>
-        </Reorder.Item>
-      ))}
-      <button
-        onClick={(e) => {
-          api.postUsers(users[0]);
-          deletee();
-
-
-        }}
-      >
-        СОХРАНЯЛКА
-      </button>
-    </Reorder.Group>
+<div></div>
   );
 }
 
